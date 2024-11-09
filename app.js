@@ -1,8 +1,13 @@
+const dotenv = require('dotenv');
 const mongoose = require('mongoose');  
 const express = require('express');
 const app = express();
 
-const DB = "mongodb+srv://bhagirathnakum8:nakum7773@cluster0.vhzex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+dotenv.config({path:"./config.env"})
+
+const DB = process.env.DATABASE;
+// const DB = "mongodb+srv://bhagirathnakum8:nakum7773@cluster0.vhzex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
 mongoose.connect(DB).then(()=>{
     console.log("Connected Successfully");
 }).catch((err) => console.log("No connection"+ err));
