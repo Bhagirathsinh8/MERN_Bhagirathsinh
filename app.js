@@ -2,19 +2,21 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');  
 const express = require('express');
 const app = express();
+const routes = require('./router/auth'); // Importing the routes
 
 dotenv.config({path:"./config.env"})
+require('./db/conn');
+// const User = require('./models/userSchema');
 
-const DB = process.env.DATABASE;
-// const DB = "mongodb+srv://bhagirathnakum8:nakum7773@cluster0.vhzex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-
-mongoose.connect(DB).then(()=>{
-    console.log("Connected Successfully");
-}).catch((err) => console.log("No connection"+ err));
+// we link router Files to Route here
+app.use('/', routes);  // All routes in routes.js will be prefixed with '/'
 
 
-//Middleware 
-//create simple function and call function below same as middleware
+const PORT = process.env.PORT
+
+
+
+//Middleware ---------- create simple function and call function below same as middleware
 const middleware = (req,res,next) =>{
 console.log("My Middleware");
 next();
@@ -42,6 +44,6 @@ app.get('/signup',(req, res)=>{
     res.send("Welcome to Regisration page Of MERN Project");
 })
 
-app.listen(3000,()=>{
-    console.log("Server listening on port 3000")
+app.listen(PORT,()=>{
+    console.log(`Server listening on port ${PORT}`)
 })
