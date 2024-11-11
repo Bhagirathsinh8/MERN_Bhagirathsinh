@@ -8,13 +8,14 @@ dotenv.config({path:"./config.env"})
 require('./db/conn');
 // const User = require('./models/userSchema');
 
+app.use(express.json()); 
 // we link router Files to Route here
 app.use('/', routes);  // All routes in routes.js will be prefixed with '/'
 
 
 const PORT = process.env.PORT
 
-
+ 
 
 //Middleware ---------- create simple function and call function below same as middleware
 const middleware = (req,res,next) =>{
