@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 
@@ -72,6 +73,7 @@ router.post("/signin", async (req, res) => {
   // console.log(req.body)
   // res.json({message:req.body});
   try {
+    let token;
     const { email, password } = req.body;
     if (!email || !password) {
       return res.status(422).json({ error: "Please Fill All Fields" });
@@ -81,6 +83,14 @@ router.post("/signin", async (req, res) => {
     // console.log(userLogin);
     if (userLogin) {
       const isMatch = await bcrypt.compare(password, userLogin.password);
+
+      token = await userLogin.generateAuthToken();
+      // console.log(token);
+      res.cookie("jwtoken",token,{
+        expires: new Date(Date.now() + 2592000000),
+        httpOnly: true,
+      });
+
       if (!isMatch) {
         res.status(400).json({ message: "Login Unsuccessfull pass Wrong" });
       } else {
